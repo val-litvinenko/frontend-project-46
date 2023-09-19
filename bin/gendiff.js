@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import genDiff from '../make-diff.js';
 
 const program = new Command();
 
@@ -9,6 +10,7 @@ program
   .description('Compares two configuration files and shows a difference.')
   .argument('<filepath1>', 'path to first file')
   .argument('<filepath2>', 'path to second file')
-  .option('-f, --format <type>', 'output format');
+  .option('-f, --format <type>', 'output format')
+  .action(genDiff);
 
 program.parse(process.argv);
