@@ -1,8 +1,11 @@
 install:
-    npm ci
+	npm ci
 
 test:
-    npm test
+	npm test
 
 publish:
-    npm publish --dry-run
+	npm publish --dry-run
+
+lint:
+	npm run lint
