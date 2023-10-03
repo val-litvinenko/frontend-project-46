@@ -3,37 +3,38 @@ import { cwd } from 'node:process';
 import { readFileSync } from 'node:fs';
 import _ from 'lodash';
 
-const generateString = (symbol, key, value) => `
-  ${symbol} ${key}: ${value}`;
-
+const generateString = (key, value) => `${key}: ${value}`;
+const generateOutput = (symbol, str) => `
+  ${symbol} ${str}`;
 const generateDiffString = (JSON1, JSON2) => {
-  const firstJsonKeys = _.sortBy(Object.keys(JSON1));
-  const secondJsonKeys = _.sortBy(Object.keys(JSON2));
+  const firstJsonKeys = Object.keys(JSON1);
+  const secondJsonKeys = Object.keys(JSON2);
 
-  let diff = '';
+  let diff = [];
 
   firstJsonKeys.forEach((key) => {
     if (Object.hasOwn(JSON2, key)) {
       if (JSON1[key] !== JSON2[key]) {
-        diff = `${diff}${generateString('-', key, JSON1[key])}${generateString('+', key, JSON2[key])}`;
+        diff.push([generateString(key, JSON1[key]), '-']);
+        diff.push([generateString(key, JSON2[key]), '+']);
       }
       if (JSON1[key] === JSON2[key]) {
-        diff = `${diff}${generateString(' ', key, JSON1[key])}`;
+        diff.push([generateString(key, JSON1[key]), ' ']);
       }
     } else {
-      diff = `${diff}${generateString('-', key, JSON1[key])}`;
+      diff.push([generateString(key, JSON1[key]), '-']);
     }
   });
   const filteredKeys = secondJsonKeys.filter((key) => (!firstJsonKeys
     .includes(key)));
 
   filteredKeys.forEach((key) => {
-    diff = `${diff}${generateString('+', key, JSON2[key])}`;
+    diff.push([generateString(key, JSON2[key]), '+']);
   });
-
-  diff = `{${diff}
-}`;
-  return console.log(diff);
+  diff = _.sortBy(diff);
+  const output = diff.map(([str, symbol]) => generateOutput(symbol, str));
+  return console.log(`{${output}
+}`);
 };
 
 const genDiff = (filepath1, filepath2) => {
@@ -43,7 +44,6 @@ const genDiff = (filepath1, filepath2) => {
   const secondJsonString = readFileSync(secondPathJSON, 'utf8');
   const dataFirstJSON = JSON.parse(firstJsonString);
   const dataSecondJSON = JSON.parse(secondJsonString);
-
   generateDiffString(dataFirstJSON, dataSecondJSON);
 };
 
