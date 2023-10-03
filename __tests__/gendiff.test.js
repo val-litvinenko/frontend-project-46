@@ -1,7 +1,14 @@
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { expect, test, jest } from '@jest/globals';
-import { sameFile, dif1File, dif2File, emptyFile, defaultFile, difValue } from '../__fixtures__/correct-output.js';
+import {
+  sameFile,
+  dif1File,
+  dif2File,
+  emptyFile,
+  defaultFile,
+  difValue,
+} from '../__fixtures__/correct-output.js';
 import genDiff from '../make-diff.js';
 
 const __filename = fileURLToPath(import.meta.url);
