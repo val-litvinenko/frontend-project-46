@@ -10,7 +10,7 @@ const parser = (filepath, filedata) => {
   if (extname === '.json') {
     parsedData = JSONparser(filedata);
   }
-  if (extname === '.yml') {
+  if (extname === '.yml' || extname === '.yaml') {
     parsedData = YAMLparser(filedata);
     if (!parsedData) {
       return {};
