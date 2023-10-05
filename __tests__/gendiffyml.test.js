@@ -8,6 +8,8 @@ import {
   emptyFile,
   defaultFile,
   difValue,
+  nestedStructure,
+  sameNestedFile,
 } from '../__fixtures__/correct-output.js';
 import genDiff from '../make-diff.js';
 
@@ -32,6 +34,15 @@ test('check differences: same files', () => {
   genDiff(samefile1, samefile2);
   expect(console.log).toHaveBeenCalled();
   expect(console.log.mock.calls).toEqual([[sameFile]]);
+});
+
+test('check differences: same nested files', () => {
+  const sameNestedfile1 = getFixturePath('samenestedfile1.yml');
+  const sameNestedfile2 = getFixturePath('samenestedfile2.yml');
+  console.log = jest.fn();
+  genDiff(sameNestedfile1, sameNestedfile2);
+  expect(console.log).toHaveBeenCalled();
+  expect(console.log.mock.calls).toEqual([[sameNestedFile]]);
 });
 
 test('check differences: different files, key has in first file', () => {
@@ -68,4 +79,13 @@ test('check differences: same files, different values', () => {
   genDiff(difValue1, difValue2);
   expect(console.log).toHaveBeenCalled();
   expect(console.log.mock.calls).toEqual([[difValue]]);
+});
+
+test('check differences: different files, different values', () => {
+  const difFile1 = getFixturePath('file1.yml');
+  const difFile2 = getFixturePath('file2.yml');
+  console.log = jest.fn();
+  genDiff(difFile1, difFile2);
+  expect(console.log).toHaveBeenCalled();
+  expect(console.log.mock.calls).toEqual([[nestedStructure]]);
 });
