@@ -1,4 +1,16 @@
 {
-  "host": "hexlet.io",
-  "follow": true
+  "common": {
+    "setting3": true,
+    "setting6": {
+      "doge": {
+        "wow": ""
+      }
+    }
+  },
+  "group1": {
+    "foo": "bar",
+    "nest": {
+      "key": "value"
+    }
+  }
 }

@@ -13,28 +13,142 @@ const sameFile = `{
     timeout: 100
 }`;
 
+const sameNestedFile = `{
+  common: {
+    setting1: Value 1,
+    setting2: 200,
+    setting3: true,
+    setting6: {
+      key: value,
+      doge: {
+        wow:
+      }
+    }
+  },
+  group1: {
+    baz: bas,
+    foo: bar,
+    nest: {
+      key: value
+    }
+  },
+  group2: {
+    abc: 12345,
+    deep: {
+      id: 45
+    }
+  }
+}`;
+
 const dif1File = `{
-    follow: true,
-    host: hexlet.io,
-  - timeout: 100
+  common: {
+    - setting1: Value 1
+    - setting2: 200
+      setting3: true
+      setting6: {
+          doge: {
+              wow: 
+          }
+      }
+  }
+  group1: {
+    - baz: bas
+      foo: bar
+      nest: {
+          key: value
+      }
+  }
 }`;
 
 const dif2File = `{
-  + follow: true,
-    host: hexlet.io,
-  + proxy: 123.234.53.22,
-    timeout: 100
+  common: {
+    + setting1: Value 1
+    + setting2: 200
+      setting3: true
+      setting6: {
+          doge: {
+              wow: 
+          }
+      }
+  }
+  group1: {
+    + baz: bas
+      foo: bar
+      nest: {
+          key: value
+      }
+  }
 }`;
 
 const emptyFile = `{
 }`;
 
 const difValue = `{
-  + follow: false,
-  - follow: true,
-    proxy: 123.234.53.22,
-  + timeout: 100,
-  - timeout: 300
+  common: {
+    + setting1: Value 5
+    - setting1: Value 1
+      setting2: 200
+    + setting3: false
+    - setting3: true
+      setting6: {
+          doge: {
+           + wow: !
+           - wow: 
+          }
+      }
+  }
+  group1: {
+      baz: bas
+      foo: bar
+      nest: {
+          key: value
+      }
+  }
+}`;
+
+const nestedStructure = `{
+  common: {
+    + follow: false
+      setting1: Value 1
+    - setting2: 200
+    - setting3: true
+    + setting3: null
+    + setting4: blah blah
+    + setting5: {
+          key5: value5
+      }
+      setting6: {
+          doge: {
+            - wow: 
+            + wow: so much
+          }
+          key: value
+        + ops: vops
+      }
+  }
+  group1: {
+    - baz: bas
+    + baz: bars
+      foo: bar
+    - nest: {
+          key: value
+      }
+    + nest: str
+  }
+- group2: {
+      abc: 12345
+      deep: {
+          id: 45
+      }
+  }
++ group3: {
+      deep: {
+          id: {
+              number: 45
+          }
+      }
+      fee: 100500
+  }
 }`;
 
 export {
@@ -44,4 +158,6 @@ export {
   dif2File,
   emptyFile,
   difValue,
+  nestedStructure,
+  sameNestedFile,
 };

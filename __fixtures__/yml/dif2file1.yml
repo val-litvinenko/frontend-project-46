@@ -1,3 +1,10 @@
 ---
-host: hexlet.io
-timeout: 100
+common:
+  setting3: true
+  setting6:
+    doge:
+      wow: ""
+group1:
+  foo: bar
+  nest:
+    key: value
