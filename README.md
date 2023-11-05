@@ -11,3 +11,6 @@ https://asciinema.org/a/a0CNpmXJepkbaAtTy47TdsDnA
 
 Пример работы со сравнением плоских файлов YAML
 https://asciinema.org/a/hIi0rKS335IF5bdT5UMDFmPJy
+
+Пример работы со сравнением вложенных файлов JSON
+https://asciinema.org/a/Ph4UTRDvAfhMHUj5E56CYq55T
