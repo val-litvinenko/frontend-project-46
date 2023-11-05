@@ -79,7 +79,7 @@ ${output}
 ${' '.repeat((depth - 1) * COUNT_INDENT)}}`;
 };
 
-const genDiff = (filepath1, filepath2, type) => {
+const genDiff = (filepath1, filepath2, options) => {
   const firstPathFile = path.resolve(cwd(), filepath1);
   const secondPathFile = path.resolve(cwd(), filepath2);
   const firstString = readFileSync(firstPathFile, 'utf8');
@@ -87,7 +87,7 @@ const genDiff = (filepath1, filepath2, type) => {
   const parsedFirstFile = parser(firstPathFile, firstString);
   const parsedSecondFile = parser(secondPathFile, secondString);
   const difference = generateDiff(parsedFirstFile, parsedSecondFile);
-  if (type === 'stylish') {
+  if (options.format === 'stylish') {
     console.log(stylish(difference, difference));
   }
 };
