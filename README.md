@@ -17,3 +17,6 @@ https://asciinema.org/a/Ph4UTRDvAfhMHUj5E56CYq55T
 
 Пример работы со сравнением вложенных и плоских файлов с использованием форматтера plain
 https://asciinema.org/a/ss7XM4i3oRxnnpxxLPlDbXGkP
+
+Пример работы со сравнением вложенных и плоских файлов с использованием форматтера json
+https://asciinema.org/a/TG1dCauBihgmDJUpfX2lChG4M
