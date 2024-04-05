@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import makeConditionDict from '../utils.js';
 
 const generateStringForStylish = (depth, symbol, key, value) => `${depth}${symbol} ${key}: ${value}`;
 const symbols = [' ', '+', '-'];
@@ -28,37 +29,48 @@ ${' '.repeat((depth) * COUNT_INDENT)}}`;
 
 const stylish = (diff, currentDepth = 1) => {
   const outputArray = _.sortBy(diff, (o) => o.key1 ?? o.key2).map((obj) => {
-    if (obj.key1 === obj.key2 && obj.value1 !== obj.value2) {
-      if (_.isObject(obj.value1)) {
-        return `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, buildObjectString(obj.value1, currentDepth))}
+    const CONDITIONS = makeConditionDict(obj);
+    let result;
+    switch (true) {
+      case CONDITIONS.sameKey:
+        if (_.isObject(obj.value1)) {
+          result = `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, buildObjectString(obj.value1, currentDepth))}
 ${generateStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, obj.value2)}`;
-      }
-      if (_.isObject(obj.value1)) {
-        return `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
+        } else if (_.isObject(obj.value2)) {
+          result = `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
 ${generateStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, buildObjectString(obj.value2, currentDepth))}`;
-      }
-      return `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
+        } else {
+          result = `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
 ${generateStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, obj.value2)}`;
+        }
+        break;
+      case CONDITIONS.onlyKey2:
+        if (_.isObject(obj.value2)) {
+          result = generateStringForStylish(buildGap(currentDepth), symbols[1], obj
+            .key2, buildObjectString(obj.value2, currentDepth));
+        } else {
+          result = generateStringForStylish(buildGap(currentDepth), symbols[1], obj
+            .key2, obj.value2);
+        }
+        break;
+      case CONDITIONS.onlyKey1:
+        if (_.isObject(obj.value1)) {
+          result = generateStringForStylish(buildGap(currentDepth), symbols[2], obj
+            .key1, buildObjectString(obj.value1, currentDepth));
+        } else {
+          result = generateStringForStylish(buildGap(currentDepth), symbols[2], obj
+            .key1, obj.value1);
+        }
+        break;
+      case CONDITIONS.innerKeys:
+        result = generateStringForStylish(buildGap(currentDepth), symbols[0], obj
+          .key1, stylish(obj.children, currentDepth + 1));
+        break;
+      default:
+        result = generateStringForStylish(buildGap(currentDepth), symbols[0], obj.key1, obj.value1);
+        break;
     }
-    if (obj.key1 === null) {
-      if (_.isObject(obj.value2)) {
-        return generateStringForStylish(buildGap(currentDepth), symbols[1], obj
-          .key2, buildObjectString(obj.value2, currentDepth));
-      }
-      return generateStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, obj.value2);
-    }
-    if (obj.key2 === null) {
-      if (_.isObject(obj.value1)) {
-        return generateStringForStylish(buildGap(currentDepth), symbols[2], obj
-          .key1, buildObjectString(obj.value1, currentDepth));
-      }
-      return generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1);
-    }
-    if (obj.children.length > 0) {
-      return generateStringForStylish(buildGap(currentDepth), symbols[0], obj
-        .key1, stylish(obj.children, currentDepth + 1));
-    }
-    return generateStringForStylish(buildGap(currentDepth), symbols[0], obj.key1, obj.value1);
+    return result;
   });
   const output = outputArray.join('\n');
   return `{
