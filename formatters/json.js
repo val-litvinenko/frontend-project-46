@@ -17,34 +17,42 @@ const buildObjectString = (object, identifier) => {
   });
   return `{${objectLines.join(',')}}`;
 };
-
+const makeConditionDict = (obj) => ({
+  sameKey: obj.key1 === obj.key2 && obj.value1 !== obj.value2,
+  onlyKey2: obj.key1 === null,
+  onlyKey1: obj.key2 === null,
+  innerKeys: obj.children.length > 0,
+});
 const json = (diff) => {
   const outputArray = _.sortBy(diff, (o) => o.key1 ?? o.key2).map((obj) => {
-    if (obj.key1 === obj.key2 && obj.value1 !== obj.value2) {
-      if (_.isObject(obj.value1)) {
-        return `${generateStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${generateStringForJson('file2', obj.key2, addQuotes(obj.value2))}`;
-      }
-      if (_.isObject(obj.value2)) {
-        return `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`;
-      }
-      return `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key1, addQuotes(obj.value2))}`;
+    const CONDITIONS = makeConditionDict(obj);
+    let result;
+    switch (true) {
+      case CONDITIONS.sameKey:
+        if (_.isObject(obj.value1)) {
+          result = `${generateStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${generateStringForJson('file2', obj.key2, addQuotes(obj.value2))}`;
+        } else if (_.isObject(obj.value2)) {
+          result = `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`;
+        } else result = `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key1, addQuotes(obj.value2))}`;
+        break;
+      case CONDITIONS.onlyKey2:
+        if (_.isObject(obj.value2)) {
+          result = `${generateStringForJson('file1', obj.key2, 'null')},${generateStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`;
+        } else result = `${generateStringForJson('file1', obj.key2, 'null')},${generateStringForJson('file2', obj.key2, addQuotes(obj.value2))}`;
+        break;
+      case CONDITIONS.onlyKey1:
+        if (_.isObject(obj.value1)) {
+          result = `${generateStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${generateStringForJson('file2', obj.key1, 'null')}`;
+        } else result = `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key1, 'null')}`;
+        break;
+      case CONDITIONS.innerKeys:
+        result = `${generateStringForJson('files', obj.key1, json(obj.children))}`;
+        break;
+      default:
+        result = `${generateStringForJson('files', obj.key1, addQuotes(obj.value1))}`;
+        break;
     }
-    if (obj.key1 === null) {
-      if (_.isObject(obj.value2)) {
-        return `${generateStringForJson('file1', obj.key2, 'null')},${generateStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`;
-      }
-      return `${generateStringForJson('file1', obj.key2, 'null')},${generateStringForJson('file2', obj.key2, addQuotes(obj.value2))}`;
-    }
-    if (obj.key2 === null) {
-      if (_.isObject(obj.value1)) {
-        return `${generateStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${generateStringForJson('file2', obj.key1, 'null')}`;
-      }
-      return `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key1, 'null')}`;
-    }
-    if (obj.children.length > 0) {
-      return `${generateStringForJson('files', obj.key1, json(obj.children))}`;
-    }
-    return `${generateStringForJson('files', obj.key1, addQuotes(obj.value1))}`;
+    return result;
   });
   const output = outputArray.join(',');
   return `{${output}}`;
