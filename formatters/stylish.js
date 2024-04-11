@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import makeConditionDict from '../utils.js';
 
-const formatStringForStylish = (depth, symbol, key, value) => `${depth}${symbol} ${key}: ${value}`;
+const formatString = (depth, symbol, key, value) => `${depth}${symbol} ${key}: ${value}`;
 const symbols = [' ', '+', '-'];
 const COUNT_INDENT = 4;
 
@@ -10,57 +10,48 @@ const buildGap = (depth) => {
   return ' '.repeat(gapLevel);
 };
 
-const buildObjectString = (object, depth) => {
+const makeDiffFormat = (depth, key1, value1, key2, value2) => `${formatString(buildGap(depth), symbols[2], key1, value1)}
+${formatString(buildGap(depth), symbols[1], key2, value2)}`;
+
+const makeObjStr = (object, depth) => {
   const keys = Object.keys(object);
   const objectLines = keys.map((key) => {
     if (_.isObject(object[key])) {
-      return formatStringForStylish(
+      return formatString(
         buildGap(depth + 1),
         symbols[0],
         key,
-        buildObjectString(object[key], depth + 1),
+        makeObjStr(object[key], depth + 1),
       );
     }
-    return formatStringForStylish(buildGap(depth + 1), symbols[0], key, object[key]);
+    return formatString(buildGap(depth + 1), symbols[0], key, object[key]);
   });
   return `{
 ${objectLines.join('\n')}
 ${' '.repeat((depth) * COUNT_INDENT)}}`;
 };
 
-const generateStringForStylish = (obj, conditions, currentDepth) => {
+const generateString = (obj, conditions, depth) => {
   let result;
   switch (true) {
     case conditions.sameKey:
-      result = `${formatStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
-${formatStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, obj.value2)}`;
+      result = makeDiffFormat(depth, obj.key1, obj.value1, obj.key2, obj.value2);
       break;
     case conditions.sameKeyObj1:
-      result = `${formatStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, buildObjectString(obj.value1, currentDepth))}
-${formatStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, obj.value2)}`;
+      result = makeDiffFormat(depth, obj.key1, makeObjStr(obj.value1, depth), obj.key2, obj.value2);
       break;
     case conditions.sameKeyObj2:
-      result = `${formatStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
-${formatStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, buildObjectString(obj.value2, currentDepth))}`;
+      result = makeDiffFormat(depth, obj.key1, obj.value1, obj.key2, makeObjStr(obj.value2, depth));
       break;
     case conditions.onlyKey2Object:
-      result = formatStringForStylish(buildGap(currentDepth), symbols[1], obj
-        .key2, buildObjectString(obj.value2, currentDepth));
+      result = formatString(buildGap(depth), symbols[1], obj.key2, makeObjStr(obj.value2, depth));
       break;
     case conditions.onlyKey2:
-      result = formatStringForStylish(buildGap(currentDepth), symbols[1], obj
-        .key2, obj.value2);
-      break;
-    case conditions.onlyKey1Object:
-      result = formatStringForStylish(buildGap(currentDepth), symbols[2], obj
-        .key1, buildObjectString(obj.value1, currentDepth));
-      break;
-    case conditions.onlyKey1:
-      result = formatStringForStylish(buildGap(currentDepth), symbols[2], obj
-        .key1, obj.value1);
+      result = formatString(buildGap(depth), symbols[1], obj.key2, obj.value2);
       break;
     default:
-      result = formatStringForStylish(buildGap(currentDepth), symbols[0], obj.key1, obj.value1);
+      result = formatString(buildGap(depth), obj.key2 === null ? symbols[2] : symbols[0], obj
+        .key1, _.isObject(obj.value1) ? makeObjStr(obj.value1, depth) : obj.value1);
       break;
   }
   return result;
@@ -70,10 +61,10 @@ const stylish = (diff, currentDepth = 1) => {
   const outputArray = _.sortBy(diff, (o) => o.key1 ?? o.key2).map((obj) => {
     const CONDITIONS = makeConditionDict(obj);
     if (CONDITIONS.innerKeys) {
-      return formatStringForStylish(buildGap(currentDepth), symbols[0], obj
+      return formatString(buildGap(currentDepth), symbols[0], obj
         .key1, stylish(obj.children, currentDepth + 1));
     }
-    return generateStringForStylish(obj, CONDITIONS, currentDepth);
+    return generateString(obj, CONDITIONS, currentDepth);
   });
   const output = outputArray.join('\n');
   return `{
