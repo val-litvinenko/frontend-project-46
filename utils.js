@@ -10,6 +10,7 @@ const makeConditionDict = (obj) => ({
   onlyKey2: obj.key1 === null && !(_.isObject(obj.value2)),
   onlyKey2Object: obj.key1 === null && _.isObject(obj.value2),
   innerKeys: obj.children.length > 0,
+  notKey1: !obj.key1,
   notKey2: !obj.key2,
   objVal1: _.isObject(obj.value1),
 });
