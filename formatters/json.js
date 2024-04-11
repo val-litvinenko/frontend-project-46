@@ -23,7 +23,7 @@ const json = (diff) => {
   const outputArray = _.sortBy(diff, (o) => o.key1 ?? o.key2).map((obj) => {
     const CONDITIONS = makeConditionDict(obj);
     let result;
-    switch (true) { // +2
+    switch (true) {
       case CONDITIONS.sameKey:
         result = `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key1, addQuotes(obj.value2))}`;
         break;
