@@ -33,34 +33,32 @@ const stylish = (diff, currentDepth = 1) => {
     let result;
     switch (true) {
       case CONDITIONS.sameKey:
-        if (_.isObject(obj.value1)) {
-          result = `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, buildObjectString(obj.value1, currentDepth))}
+        result = `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
 ${generateStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, obj.value2)}`;
-        } else if (_.isObject(obj.value2)) {
-          result = `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
+        break;
+      case CONDITIONS.sameKeyObj1:
+        result = `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, buildObjectString(obj.value1, currentDepth))}
+${generateStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, obj.value2)}`;
+        break;
+      case CONDITIONS.sameKeyObj2:
+        result = `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
 ${generateStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, buildObjectString(obj.value2, currentDepth))}`;
-        } else {
-          result = `${generateStringForStylish(buildGap(currentDepth), symbols[2], obj.key1, obj.value1)}
-${generateStringForStylish(buildGap(currentDepth), symbols[1], obj.key2, obj.value2)}`;
-        }
+        break;
+      case CONDITIONS.onlyKey2Object:
+        result = generateStringForStylish(buildGap(currentDepth), symbols[1], obj
+          .key2, buildObjectString(obj.value2, currentDepth));
         break;
       case CONDITIONS.onlyKey2:
-        if (_.isObject(obj.value2)) {
-          result = generateStringForStylish(buildGap(currentDepth), symbols[1], obj
-            .key2, buildObjectString(obj.value2, currentDepth));
-        } else {
-          result = generateStringForStylish(buildGap(currentDepth), symbols[1], obj
-            .key2, obj.value2);
-        }
+        result = generateStringForStylish(buildGap(currentDepth), symbols[1], obj
+          .key2, obj.value2);
+        break;
+      case CONDITIONS.onlyKey1Object:
+        result = generateStringForStylish(buildGap(currentDepth), symbols[2], obj
+          .key1, buildObjectString(obj.value1, currentDepth));
         break;
       case CONDITIONS.onlyKey1:
-        if (_.isObject(obj.value1)) {
-          result = generateStringForStylish(buildGap(currentDepth), symbols[2], obj
-            .key1, buildObjectString(obj.value1, currentDepth));
-        } else {
-          result = generateStringForStylish(buildGap(currentDepth), symbols[2], obj
-            .key1, obj.value1);
-        }
+        result = generateStringForStylish(buildGap(currentDepth), symbols[2], obj
+          .key1, obj.value1);
         break;
       case CONDITIONS.innerKeys:
         result = generateStringForStylish(buildGap(currentDepth), symbols[0], obj

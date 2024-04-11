@@ -9,19 +9,19 @@ const plain = (diff, parent = '') => {
     .flatMap((obj) => {
       const CONDITIONS = makeConditionDict(obj);
       let result;
-      switch (true) {
+      switch (true) { // 2
         case CONDITIONS.notKey2:
           result = `Property '${parent}${obj.key1}' was ${changes[0]}`;
           break;
         case CONDITIONS.notKey1:
-          result = `Property '${parent}${obj.key2}' was ${changes[2]} with value: ${_.isObject(obj.value2) ? '[complex value]' : `${isString(obj.value2)}`}`;
+          result = `Property '${parent}${obj.key2}' was ${changes[2]} with value: ${_.isObject(obj.value2) ? '[complex value]' : `${isString(obj.value2)}`}`; // 2
           break;
         case CONDITIONS.innerKeys:
           result = plain(obj.children, `${parent}${obj.key1}.`);
           break;
         default:
           result = `Property '${parent}${obj.key1}' was ${changes[1]}. From ${_.isObject(obj
-            .value1) ? '[complex value]' : `${isString(obj.value1)}`} to ${_.isObject(obj.value2) ? '[complex value]' : `${isString(obj.value2)}`}`;
+            .value1) ? '[complex value]' : `${isString(obj.value1)}`} to ${_.isObject(obj.value2) ? '[complex value]' : `${isString(obj.value2)}`}`; // 4
           break;
       }
       return result;
