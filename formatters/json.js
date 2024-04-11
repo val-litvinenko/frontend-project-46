@@ -23,25 +23,25 @@ const json = (diff) => {
   const outputArray = _.sortBy(diff, (o) => o.key1 ?? o.key2).map((obj) => {
     const CONDITIONS = makeConditionDict(obj);
     let result;
-    switch (true) {
+    switch (true) { // +2
       case CONDITIONS.sameKey:
-        if (_.isObject(obj.value1)) {
+        if (_.isObject(obj.value1)) { // +3
           result = `${generateStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${generateStringForJson('file2', obj.key2, addQuotes(obj.value2))}`;
-        } else if (_.isObject(obj.value2)) {
+        } else if (_.isObject(obj.value2)) { // +3
           result = `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`;
         } else {
           result = `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key1, addQuotes(obj.value2))}`;
         }
         break;
       case CONDITIONS.onlyKey2:
-        if (_.isObject(obj.value2)) {
+        if (_.isObject(obj.value2)) { // +3
           result = `${generateStringForJson('file1', obj.key2, 'null')},${generateStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`;
         } else {
           result = `${generateStringForJson('file1', obj.key2, 'null')},${generateStringForJson('file2', obj.key2, addQuotes(obj.value2))}`;
         }
         break;
       case CONDITIONS.onlyKey1:
-        if (_.isObject(obj.value1)) {
+        if (_.isObject(obj.value1)) { // +3
           result = `${generateStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${generateStringForJson('file2', obj.key1, 'null')}`;
         } else {
           result = `${generateStringForJson('file1', obj.key1, addQuotes(obj.value1))},${generateStringForJson('file2', obj.key1, 'null')}`;
