@@ -18,7 +18,8 @@ const generateString = (obj, conditions, parent) => {
 };
 
 const plain = (diff, parent = '') => {
-  const outputArray = diff.filter((obj) => obj.value1 !== obj.value2 || obj.children.length > 0)
+  const outputArray = _.sortBy(diff, (o) => o.key1 ?? o.key2).filter((obj) => obj
+    .value1 !== obj.value2 || obj.children.length > 0)
     .flatMap((obj) => {
       const CONDITIONS = makeConditionDict(obj);
       if (CONDITIONS.innerKeys) {
@@ -26,8 +27,7 @@ const plain = (diff, parent = '') => {
       }
       return generateString(obj, CONDITIONS, parent);
     })
-    .filter((str) => str.length > 0)
-    .sort();
+    .filter((str) => str.length > 0);
   return outputArray.join('\n');
 };
 
