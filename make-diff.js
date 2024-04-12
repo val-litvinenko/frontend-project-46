@@ -5,7 +5,7 @@ import parser from './parsers.js';
 import generateDiff from './generate-diff.js';
 import formatter from './formatters/index.js';
 
-const genDiff = (filepath1, filepath2, options = { format: 'stylish' }) => {
+const genDiff = (filepath1, filepath2, format) => {
   const firstPathFile = path.resolve(cwd(), filepath1);
   const secondPathFile = path.resolve(cwd(), filepath2);
   const firstString = readFileSync(firstPathFile, 'utf8');
@@ -13,7 +13,7 @@ const genDiff = (filepath1, filepath2, options = { format: 'stylish' }) => {
   const parsedFirstFile = parser(firstPathFile, firstString);
   const parsedSecondFile = parser(secondPathFile, secondString);
   const difference = generateDiff(parsedFirstFile, parsedSecondFile);
-  console.log(formatter(options.format, difference));
+  console.log(formatter(format, difference));
 };
 
 export default genDiff;
