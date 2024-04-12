@@ -2,7 +2,7 @@
   "name": "@hexlet/code",
   "version": "1.0.0",
   "description": "Программа, определяющая разницу между двумя структурами данных",
-  "main": "gendiff.js",
+  "main": "bin/gendiff.js",
   "type": "module",
   "scripts": {
     "test": "npx jest",
