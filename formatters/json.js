@@ -20,30 +20,30 @@ const buildObjectString = (object, identifier) => {
 };
 
 const generateString = (obj, conditions) => {
-  const result = { formattedString: '' };
+  let result;
   switch (true) {
     case conditions.sameKey:
-      result.formattedString = `${formatStringForJson('file1', obj.key1, addQuotes(obj.value1))},${formatStringForJson('file2', obj.key1, addQuotes(obj.value2))}`;
+      result = `${formatStringForJson('file1', obj.key1, addQuotes(obj.value1))},${formatStringForJson('file2', obj.key1, addQuotes(obj.value2))}`;
       break;
     case conditions.sameKeyObj1:
-      result.formattedString = `${formatStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${formatStringForJson('file2', obj.key2, addQuotes(obj.value2))}`;
+      result = `${formatStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${formatStringForJson('file2', obj.key2, addQuotes(obj.value2))}`;
       break;
     case conditions.sameKeyObj2:
-      result.formattedString = `${formatStringForJson('file1', obj.key1, addQuotes(obj.value1))},${formatStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`;
+      result = `${formatStringForJson('file1', obj.key1, addQuotes(obj.value1))},${formatStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`;
       break;
     case conditions.notKey1:
-      result.formattedString = conditions.onlyKey2Object ? `${formatStringForJson('file1', obj.key2, 'null')},${formatStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`
+      result = conditions.onlyKey2Object ? `${formatStringForJson('file1', obj.key2, 'null')},${formatStringForJson('file2', obj.key2, buildObjectString(obj.value2, 'file2'))}`
         : `${formatStringForJson('file1', obj.key2, 'null')},${formatStringForJson('file2', obj.key2, addQuotes(obj.value2))}`;
       break;
     case conditions.notKey2:
-      result.formattedString = conditions.onlyKey1Object ? `${formatStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${formatStringForJson('file2', obj.key1, 'null')}`
+      result = conditions.onlyKey1Object ? `${formatStringForJson('file1', obj.key1, buildObjectString(obj.value1, 'file1'))},${formatStringForJson('file2', obj.key1, 'null')}`
         : `${formatStringForJson('file1', obj.key1, addQuotes(obj.value1))},${formatStringForJson('file2', obj.key1, 'null')}`;
       break;
     default:
-      result.formattedString = `${formatStringForJson('files', obj.key1, addQuotes(obj.value1))}`;
+      result = `${formatStringForJson('files', obj.key1, addQuotes(obj.value1))}`;
       break;
   }
-  return result.formattedString;
+  return result;
 };
 
 const json = (diff) => {
