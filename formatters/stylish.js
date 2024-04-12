@@ -10,7 +10,7 @@ const buildGap = (depth) => {
   return ' '.repeat(gapLevel);
 };
 
-const makeDiffFormat = (depth, key1, value1, key2, value2) => `${formatString(buildGap(depth), symbols[2], key1, value1)}
+const mkDiffFormat = (depth, key1, value1, key2, value2) => `${formatString(buildGap(depth), symbols[2], key1, value1)}
 ${formatString(buildGap(depth), symbols[1], key2, value2)}`;
 
 const makeObjStr = (object, depth) => {
@@ -32,29 +32,29 @@ ${' '.repeat((depth) * COUNT_INDENT)}}`;
 };
 
 const generateString = (obj, conditions, depth) => {
-  let result;
+  const res = { str: '' };
   switch (true) {
     case conditions.sameKey:
-      result = makeDiffFormat(depth, obj.key1, obj.value1, obj.key2, obj.value2);
+      res.str = mkDiffFormat(depth, obj.key1, obj.value1, obj.key2, obj.value2);
       break;
     case conditions.sameKeyObj1:
-      result = makeDiffFormat(depth, obj.key1, makeObjStr(obj.value1, depth), obj.key2, obj.value2);
+      res.str = mkDiffFormat(depth, obj.key1, makeObjStr(obj.value1, depth), obj.key2, obj.value2);
       break;
     case conditions.sameKeyObj2:
-      result = makeDiffFormat(depth, obj.key1, obj.value1, obj.key2, makeObjStr(obj.value2, depth));
+      res.str = mkDiffFormat(depth, obj.key1, obj.value1, obj.key2, makeObjStr(obj.value2, depth));
       break;
     case conditions.onlyKey2Object:
-      result = formatString(buildGap(depth), symbols[1], obj.key2, makeObjStr(obj.value2, depth));
+      res.str = formatString(buildGap(depth), symbols[1], obj.key2, makeObjStr(obj.value2, depth));
       break;
     case conditions.onlyKey2:
-      result = formatString(buildGap(depth), symbols[1], obj.key2, obj.value2);
+      res.str = formatString(buildGap(depth), symbols[1], obj.key2, obj.value2);
       break;
     default:
-      result = formatString(buildGap(depth), obj.key2 === null ? symbols[2] : symbols[0], obj
+      res.str = formatString(buildGap(depth), obj.key2 === null ? symbols[2] : symbols[0], obj
         .key1, _.isObject(obj.value1) ? makeObjStr(obj.value1, depth) : obj.value1);
       break;
   }
-  return result;
+  return res.str;
 };
 
 const stylish = (diff, currentDepth = 1) => {

@@ -4,23 +4,23 @@ import makeConditionDict from '../utils.js';
 const changes = ['removed', 'updated', 'added'];
 const isString = (obj) => `${_.isString(obj) ? `'${obj}'` : obj}`;
 const generateString = (obj, conditions, parent) => {
-  let result;
+  const result = { formattedString: '' };
   switch (true) {
     case conditions.notKey2:
-      result = `Property '${parent}${obj.key1}' was ${changes[0]}`;
+      result.formattedString = `Property '${parent}${obj.key1}' was ${changes[0]}`;
       break;
     case conditions.onlyKey2:
-      result = `Property '${parent}${obj.key2}' was ${changes[2]} with value: ${isString(obj.value2)}`;
+      result.formattedString = `Property '${parent}${obj.key2}' was ${changes[2]} with value: ${isString(obj.value2)}`;
       break;
     case conditions.onlyKey2Object:
-      result = `Property '${parent}${obj.key2}' was ${changes[2]} with value: [complex value]`;
+      result.formattedString = `Property '${parent}${obj.key2}' was ${changes[2]} with value: [complex value]`;
       break;
     default:
-      result = `Property '${parent}${obj.key1}' was ${changes[1]}. From ${_.isObject(obj
+      result.formattedString = `Property '${parent}${obj.key1}' was ${changes[1]}. From ${_.isObject(obj
         .value1) ? '[complex value]' : `${isString(obj.value1)}`} to ${_.isObject(obj.value2) ? '[complex value]' : `${isString(obj.value2)}`}`;
       break;
   }
-  return result;
+  return result.formattedString;
 };
 
 const plain = (diff, parent = '') => {

@@ -6,17 +6,13 @@ const YAMLparser = (data) => yaml.load(data);
 
 const parser = (filepath, filedata) => {
   const extname = path.extname(filepath);
-  let parsedData;
   if (extname === '.json') {
-    parsedData = JSONparser(filedata);
+    return JSONparser(filedata);
   }
   if (extname === '.yml' || extname === '.yaml') {
-    parsedData = YAMLparser(filedata);
-    if (!parsedData) {
-      return {};
-    }
+    return YAMLparser(filedata);
   }
-  return parsedData;
+  return {};
 };
 
 export default parser;

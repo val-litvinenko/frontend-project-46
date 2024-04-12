@@ -17,13 +17,13 @@ const generateDiffItem = (obj1, obj2, key) => {
 };
 
 const generateDiff = (obj1, obj2) => {
-  const keys1 = Object.keys(obj1);
-  const keys2 = Object.keys(obj2);
+  const keys1 = obj1 ? Object.keys(obj1) : [];
+  const keys2 = obj2 ? Object.keys(obj2) : [];
   const keys = _.union(keys1, keys2);
   const diff = keys.map((key) => {
-    let children = [];
+    const children = [];
     if (hasValue(obj1, obj2, key)) {
-      children = generateDiff(obj1[key], obj2[key]);
+      children.push(...generateDiff(obj1[key], obj2[key]));
     }
     const diffItem = generateDiffItem(obj1, obj2, key);
     return { ...diffItem, children };
