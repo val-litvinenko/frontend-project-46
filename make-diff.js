@@ -13,7 +13,7 @@ const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const parsedFirstFile = parser(firstPathFile, firstString);
   const parsedSecondFile = parser(secondPathFile, secondString);
   const difference = generateDiff(parsedFirstFile, parsedSecondFile);
-  console.log(formatter(format, difference));
+  return formatter(format, difference);
 };
 
 export default genDiff;

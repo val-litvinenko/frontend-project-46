@@ -33,222 +33,198 @@ test('check differences: other files (stylish)', () => {
   const defaultfile1 = getFixturePath('filepath1.json');
   const defaultfile2 = getFixturePath('filepath2.json');
   console.log = jest.fn();
-  genDiff(defaultfile1, defaultfile2, 'stylish');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[defaultFile]]);
+  const result = genDiff(defaultfile1, defaultfile2, 'stylish');
+  expect(result).toEqual(defaultFile);
 });
 
 test('check differences: other files (plain)', () => {
   const defaultfile1 = getFixturePath('filepath1.json');
   const defaultfile2 = getFixturePath('filepath2.json');
   console.log = jest.fn();
-  genDiff(defaultfile1, defaultfile2, 'plain');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[plainDefaultFile]]);
+  const result = genDiff(defaultfile1, defaultfile2, 'plain');
+  expect(result).toEqual(plainDefaultFile);
 });
 
 test('check differences: other files (json)', () => {
   const defaultfile1 = getFixturePath('filepath1.json');
   const defaultfile2 = getFixturePath('filepath2.json');
   console.log = jest.fn();
-  genDiff(defaultfile1, defaultfile2, 'json');
+  const result = genDiff(defaultfile1, defaultfile2, 'json');
   const jsonOtherFile = readFileSync('./__fixtures__/json_output/json_otherfiles.json', 'utf8');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[jsonOtherFile]]);
+  expect(result).toEqual(jsonOtherFile);
 });
 
 test('check differences: same files (stylish)', () => {
   const samefile1 = getFixturePath('samefile1.json');
   const samefile2 = getFixturePath('samefile2.json');
   console.log = jest.fn();
-  genDiff(samefile1, samefile2, 'stylish');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[sameFile]]);
+  const result = genDiff(samefile1, samefile2, 'stylish');
+  expect(result).toEqual(sameFile);
 });
 
 test('check differences: same files (plain)', () => {
   const samefile1 = getFixturePath('samefile1.json');
   const samefile2 = getFixturePath('samefile2.json');
   console.log = jest.fn();
-  genDiff(samefile1, samefile2, 'plain');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[plainSameFile]]);
+  const result = genDiff(samefile1, samefile2, 'plain');
+  expect(result).toEqual(plainSameFile);
 });
 
 test('check differences: same files (json)', () => {
   const samefile1 = getFixturePath('samefile1.json');
   const samefile2 = getFixturePath('samefile2.json');
   console.log = jest.fn();
-  genDiff(samefile1, samefile2, 'json');
+  const result = genDiff(samefile1, samefile2, 'json');
   const jsonSameFiles = readFileSync('./__fixtures__/json_output/json_samefiles.json', 'utf8');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[jsonSameFiles]]);
+  expect(result).toEqual(jsonSameFiles);
 });
 
 test('check differences: same nested files (stylish)', () => {
   const sameNestedfile1 = getFixturePath('samenestedfile1.json');
   const sameNestedfile2 = getFixturePath('samenestedfile2.json');
   console.log = jest.fn();
-  genDiff(sameNestedfile1, sameNestedfile2, 'stylish');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[sameNestedFile]]);
+  const result = genDiff(sameNestedfile1, sameNestedfile2, 'stylish');
+  expect(result).toEqual(sameNestedFile);
 });
 
 test('check differences: same nested files (plain)', () => {
   const sameNestedfile1 = getFixturePath('samenestedfile1.json');
   const sameNestedfile2 = getFixturePath('samenestedfile2.json');
   console.log = jest.fn();
-  genDiff(sameNestedfile1, sameNestedfile2, 'plain');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[plainSameNestedFile]]);
+  const result = genDiff(sameNestedfile1, sameNestedfile2, 'plain');
+  expect(result).toEqual(plainSameNestedFile);
 });
 
 test('check differences: same nested files (json)', () => {
   const sameNestedfile1 = getFixturePath('samenestedfile1.json');
   const sameNestedfile2 = getFixturePath('samenestedfile2.json');
   console.log = jest.fn();
-  genDiff(sameNestedfile1, sameNestedfile2, 'json');
+  const result = genDiff(sameNestedfile1, sameNestedfile2, 'json');
   const jsonNestedFiles = readFileSync('./__fixtures__/json_output/json_nestedfiles.json', 'utf8');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[jsonNestedFiles]]);
+  expect(result).toEqual(jsonNestedFiles);
 });
 
 test('check differences: different files, key has in first file (stylish)', () => {
   const difString1file1 = getFixturePath('dif1file1.json');
   const difString1file2 = getFixturePath('dif1file2.json');
   console.log = jest.fn();
-  genDiff(difString1file1, difString1file2, 'stylish');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[dif1File]]);
+  const result = genDiff(difString1file1, difString1file2, 'stylish');
+  expect(result).toEqual(dif1File);
 });
 
 test('check differences: different files, key has in first file (plain)', () => {
   const difString1file1 = getFixturePath('dif1file1.json');
   const difString1file2 = getFixturePath('dif1file2.json');
   console.log = jest.fn();
-  genDiff(difString1file1, difString1file2, 'plain');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[plainDif1File]]);
+  const result = genDiff(difString1file1, difString1file2, 'plain');
+  expect(result).toEqual(plainDif1File);
 });
 
 test('check differences: different files, key has in first file (json)', () => {
   const difString1file1 = getFixturePath('dif1file1.json');
   const difString1file2 = getFixturePath('dif1file2.json');
   console.log = jest.fn();
-  genDiff(difString1file1, difString1file2, 'json');
+  const result = genDiff(difString1file1, difString1file2, 'json');
   const jsonDif1File = readFileSync('./__fixtures__/json_output/json_dif1file.json', 'utf8');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[jsonDif1File]]);
+  expect(result).toEqual(jsonDif1File);
 });
 
 test('check differences: different files, keys has in second file (stylish)', () => {
   const difString2file1 = getFixturePath('dif2file1.json');
   const difString2file2 = getFixturePath('dif2file2.json');
   console.log = jest.fn();
-  genDiff(difString2file1, difString2file2, 'stylish');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[dif2File]]);
+  const result = genDiff(difString2file1, difString2file2, 'stylish');
+  expect(result).toEqual(dif2File);
 });
 
 test('check differences: different files, keys has in second file (plain))', () => {
   const difString2file1 = getFixturePath('dif2file1.json');
   const difString2file2 = getFixturePath('dif2file2.json');
   console.log = jest.fn();
-  genDiff(difString2file1, difString2file2, 'plain');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[plainDif2File]]);
+  const result = genDiff(difString2file1, difString2file2, 'plain');
+  expect(result).toEqual(plainDif2File);
 });
 
 test('check differences: different files, keys has in second file (json)', () => {
   const difString2file1 = getFixturePath('dif2file1.json');
   const difString2file2 = getFixturePath('dif2file2.json');
   console.log = jest.fn();
-  genDiff(difString2file1, difString2file2, 'json');
+  const result = genDiff(difString2file1, difString2file2, 'json');
   const jsonDif2File = readFileSync('./__fixtures__/json_output/json_dif2file.json', 'utf8');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[jsonDif2File]]);
+  expect(result).toEqual(jsonDif2File);
 });
 
 test('check differences: empty files (stylish)', () => {
   const emptyFile1 = getFixturePath('emptyfile1.json');
   const emptyFile2 = getFixturePath('emptyfile2.json');
   console.log = jest.fn();
-  genDiff(emptyFile1, emptyFile2, 'stylish');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[emptyFile]]);
+  const result = genDiff(emptyFile1, emptyFile2, 'stylish');
+  expect(result).toEqual(emptyFile);
 });
 
 test('check differences: empty files (plain)', () => {
   const emptyFile1 = getFixturePath('emptyfile1.json');
   const emptyFile2 = getFixturePath('emptyfile2.json');
   console.log = jest.fn();
-  genDiff(emptyFile1, emptyFile2, 'plain');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[plainEmptyFile]]);
+  const result = genDiff(emptyFile1, emptyFile2, 'plain');
+  expect(result).toEqual(plainEmptyFile);
 });
 
 test('check differences: empty files (json)', () => {
   const emptyFile1 = getFixturePath('emptyfile1.json');
   const emptyFile2 = getFixturePath('emptyfile2.json');
   console.log = jest.fn();
-  genDiff(emptyFile1, emptyFile2, 'json');
+  const result = genDiff(emptyFile1, emptyFile2, 'json');
   const jsonEmptyFile = readFileSync('./__fixtures__/json_output/json_emptyfiles.json', 'utf8');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[jsonEmptyFile]]);
+  expect(result).toEqual(jsonEmptyFile);
 });
 
 test('check differences: same files, different values (stylish)', () => {
   const difValue1 = getFixturePath('difvalue1.json');
   const difValue2 = getFixturePath('difvalue2.json');
   console.log = jest.fn();
-  genDiff(difValue1, difValue2, 'stylish');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[difValue]]);
+  const result = genDiff(difValue1, difValue2, 'stylish');
+  expect(result).toEqual(difValue);
 });
 
 test('check differences: same files, different values (plain)', () => {
   const difValue1 = getFixturePath('difvalue1.json');
   const difValue2 = getFixturePath('difvalue2.json');
   console.log = jest.fn();
-  genDiff(difValue1, difValue2, 'plain');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[plainDifValue]]);
+  const result = genDiff(difValue1, difValue2, 'plain');
+  expect(result).toEqual(plainDifValue);
 });
 
 test('check differences: same files, different values (json)', () => {
   const difValue1 = getFixturePath('difvalue1.json');
   const difValue2 = getFixturePath('difvalue2.json');
   console.log = jest.fn();
-  genDiff(difValue1, difValue2, 'json');
+  const result = genDiff(difValue1, difValue2, 'json');
   const jsonDifValue = readFileSync('./__fixtures__/json_output/json_difvalue.json', 'utf8');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[jsonDifValue]]);
+  expect(result).toEqual(jsonDifValue);
 });
 
 test('check differences: different files, different values (stylish)', () => {
   const difFile1 = getFixturePath('file1.json');
   const difFile2 = getFixturePath('file2.json');
   console.log = jest.fn();
-  genDiff(difFile1, difFile2, 'stylish');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[nestedStructure]]);
+  const result = genDiff(difFile1, difFile2, 'stylish');
+  expect(result).toEqual(nestedStructure);
 });
 
 test('check differences: different files, different values (plain)', () => {
   const difFile1 = getFixturePath('file1.json');
   const difFile2 = getFixturePath('file2.json');
   console.log = jest.fn();
-  genDiff(difFile1, difFile2, 'plain');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[plainNestedStructure]]);
+  const result = genDiff(difFile1, difFile2, 'plain');
+  expect(result).toEqual(plainNestedStructure);
 });
 
 test('check differences: different files, different values (json)', () => {
   const difFile1 = getFixturePath('file1.json');
   const difFile2 = getFixturePath('file2.json');
   console.log = jest.fn();
-  genDiff(difFile1, difFile2, 'json');
+  const result = genDiff(difFile1, difFile2, 'json');
   const jsonDifFiles = readFileSync('./__fixtures__/json_output/json_diffile.json', 'utf8');
-  expect(console.log).toHaveBeenCalled();
-  expect(console.log.mock.calls).toEqual([[jsonDifFiles]]);
+  expect(result).toEqual(jsonDifFiles);
 });

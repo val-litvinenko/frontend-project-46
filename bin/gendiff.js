@@ -12,7 +12,7 @@ program
   .argument('<filepath2>', 'path to second file')
   .option('-f, --format <type>', 'output format', 'stylish')
   .action((filepath1, filepath2, options) => {
-    genDiff(filepath1, filepath2, options.format);
+    console.log(genDiff(filepath1, filepath2, options.format));
   });
 
 program.parse(process.argv);
