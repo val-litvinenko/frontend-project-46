@@ -1,3 +1,17 @@
+### Вычислитель отличий.
+
+Это консольное приложение предназначено для вычисления изменений между двумя разными файлами.
+Приложение поддерживает только файлы формата JSON и YAML.
+
+Для того, чтобы запустить его, необходимо выполнить команду `npm run gendiff -- <filepath1> <filepath2> --format=<formatname>`
+Параметр format можно необязательный, по умолчанию к выводу будет применяться формат stylish.
+В приложении доступны следующие форматы вывода: stylish, plain, json.
+
+Минимальные требования для корректной работы сборника:
+
+Node.js 13.14.0
+NPM 6.14.4
+
 ### Hexlet tests and linter status:
 
 [![Actions Status](https://github.com/val-litvinenko/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/val-litvinenko/frontend-project-46/actions)

@@ -6,10 +6,11 @@
   "type": "module",
   "scripts": {
     "test": "npx jest",
-    "lint": "eslint ./"
+    "lint": "eslint ./",
+    "gendiff": "node src/bin/gendiff.js"
   },
   "bin": {
-    "gendiff": "bin/gendiff.js"
+    "gendiff": "node src/bin/gendiff.js"
   },
   "repository": {
     "type": "git",
