@@ -198,7 +198,6 @@ test('check differences: different files, different values (plain)', () => {
 });
 
 test('check differences: different files, different values (json)', () => {
-
   const difFile1 = getFixturePath('file1.json');
   const difFile2 = getFixturePath('file2.json');
   const result = genDiff(difFile1, difFile2, 'json');
