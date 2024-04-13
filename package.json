@@ -10,7 +10,7 @@
     "gendiff": "node src/bin/gendiff.js"
   },
   "bin": {
-    "gendiff": "node src/bin/gendiff.js"
+    "gendiff": "src/bin/gendiff.js"
   },
   "repository": {
     "type": "git",
