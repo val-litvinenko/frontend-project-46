@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { expect, test } from '@jest/globals';
+import { expect, test, describe } from '@jest/globals';
 import { readFileSync } from 'node:fs';
 import {
   dif1File,
@@ -25,118 +25,34 @@ const __dirname = dirname(__filename);
 
 const getFixturePath = (format, filename) => join(__dirname, '..', '__fixtures__', format, `${filename}.${format}`);
 
-const testTable = [['json', 'stylish'], ['json', 'plain'], ['json', 'json'], ['yml', 'stylish'], ['yml', 'plain'], ['yml', 'json']];
+const extendsTable = [['json'], ['yml']];
 
-test.each(testTable)('check differences for %s: same nested files (%s)', (format, style) => {
-  const sameNestedfile1 = getFixturePath(format, 'samenestedfile1');
-  const sameNestedfile2 = getFixturePath(format, 'samenestedfile2');
-  const result = genDiff(sameNestedfile1, sameNestedfile2, style);
-  switch (style) {
-    case 'stylish':
-      expect(result).toEqual(sameNestedFile);
-      break;
-    case 'plain':
-      expect(result).toEqual(plainSameNestedFile);
-      break;
-    case 'json':
-      expect(result).toEqual(readFileSync('./src/__fixtures__/json_output/json_nestedfiles.json', 'utf8'));
-      break;
-    default:
-      break;
-  }
-});
+const styleAndFilesTable = [
+  ['same nested files', 'stylish', 'samenestedfile1', 'samenestedfile2', sameNestedFile],
+  ['same nested files', 'plain', 'samenestedfile1', 'samenestedfile2', plainSameNestedFile],
+  ['same nested files', 'json', 'samenestedfile1', 'samenestedfile2', readFileSync('./src/__fixtures__/json_output/json_nestedfiles.json', 'utf8')],
+  ['different files, key has in first file', 'stylish', 'dif1file1', 'dif1file2', dif1File],
+  ['different files, key has in first file', 'plain', 'dif1file1', 'dif1file2', plainDif1File],
+  ['different files, key has in first file', 'json', 'dif1file1', 'dif1file2', readFileSync('./src/__fixtures__/json_output/json_dif1file.json', 'utf8')],
+  ['different files, keys has in second file', 'stylish', 'dif2file1', 'dif2file2', dif2File],
+  ['same nested different files, keys has in second file', 'plain', 'dif2file1', 'dif2file2', plainDif2File],
+  ['different files, keys has in second file', 'json', 'dif2file1', 'dif2file2', readFileSync('./src/__fixtures__/json_output/json_dif2file.json', 'utf8')],
+  ['empty files', 'stylish', 'emptyfile1', 'emptyfile2', emptyFile],
+  ['empty files', 'plain', 'emptyfile1', 'emptyfile2', plainEmptyFile],
+  ['empty files', 'json', 'emptyfile1', 'emptyfile2', readFileSync('./src/__fixtures__/json_output/json_emptyfiles.json', 'utf8')],
+  ['same files, different values', 'stylish', 'difvalue1', 'difvalue2', difValue],
+  ['same files, different values', 'plain', 'difvalue1', 'difvalue2', plainDifValue],
+  ['same files, different values', 'json', 'difvalue1', 'difvalue2', readFileSync('./src/__fixtures__/json_output/json_difvalue.json', 'utf8')],
+  ['different files, different values', 'stylish', 'file1', 'file2', nestedStructure],
+  ['different files, different values', 'plain', 'file1', 'file2', plainNestedStructure],
+  ['different files, different values', 'json', 'file1', 'file2', readFileSync('./src/__fixtures__/json_output/json_diffile.json', 'utf8')],
+];
 
-test.each(testTable)('check differences for %s: different files, key has in first file (%s)', (format, style) => {
-  const difString1file1 = getFixturePath(format, 'dif1file1');
-  const difString1file2 = getFixturePath(format, 'dif1file2');
-  const result = genDiff(difString1file1, difString1file2, style);
-  switch (style) {
-    case 'stylish':
-      expect(result).toEqual(dif1File);
-      break;
-    case 'plain':
-      expect(result).toEqual(plainDif1File);
-      break;
-    case 'json':
-      expect(result).toEqual(readFileSync('./src/__fixtures__/json_output/json_dif1file.json', 'utf8'));
-      break;
-    default:
-      break;
-  }
-});
-
-test.each(testTable)('check differences for %s: different files, keys has in second file (%s)', (format, style) => {
-  const difString2file1 = getFixturePath(format, 'dif2file1');
-  const difString2file2 = getFixturePath(format, 'dif2file2');
-  const result = genDiff(difString2file1, difString2file2, style);
-  switch (style) {
-    case 'stylish':
-      expect(result).toEqual(dif2File);
-      break;
-    case 'plain':
-      expect(result).toEqual(plainDif2File);
-      break;
-    case 'json':
-      expect(result).toEqual(readFileSync('./src/__fixtures__/json_output/json_dif2file.json', 'utf8'));
-      break;
-    default:
-      break;
-  }
-});
-
-test.each(testTable)('check differences for %s: empty files (%s)', (format, style) => {
-  const emptyFile1 = getFixturePath(format, 'emptyfile1');
-  const emptyFile2 = getFixturePath(format, 'emptyfile2');
-  const result = genDiff(emptyFile1, emptyFile2, style);
-  switch (style) {
-    case 'stylish':
-      expect(result).toEqual(emptyFile);
-      break;
-    case 'plain':
-      expect(result).toEqual(plainEmptyFile);
-      break;
-    case 'json':
-      expect(result).toEqual(readFileSync('./src/__fixtures__/json_output/json_emptyfiles.json', 'utf8'));
-      break;
-    default:
-      break;
-  }
-});
-
-test.each(testTable)('check differences for %s: same files, different values (%s)', (format, style) => {
-  const difValue1 = getFixturePath(format, 'difvalue1');
-  const difValue2 = getFixturePath(format, 'difvalue2');
-  const result = genDiff(difValue1, difValue2, style);
-  switch (style) {
-    case 'stylish':
-      expect(result).toEqual(difValue);
-      break;
-    case 'plain':
-      expect(result).toEqual(plainDifValue);
-      break;
-    case 'json':
-      expect(result).toEqual(readFileSync('./src/__fixtures__/json_output/json_difvalue.json', 'utf8'));
-      break;
-    default:
-      break;
-  }
-});
-
-test.each(testTable)('check differences for %s: different files, different values (%s)', (format, style) => {
-  const difFile1 = getFixturePath(format, 'file1');
-  const difFile2 = getFixturePath(format, 'file2');
-  const result = genDiff(difFile1, difFile2, style);
-  switch (style) {
-    case 'stylish':
-      expect(result).toEqual(nestedStructure);
-      break;
-    case 'plain':
-      expect(result).toEqual(plainNestedStructure);
-      break;
-    case 'json':
-      expect(result).toEqual(readFileSync('./src/__fixtures__/json_output/json_diffile.json', 'utf8'));
-      break;
-    default:
-      break;
-  }
+describe.each(extendsTable)(('for %s extends'), (format) => {
+  test.each(styleAndFilesTable)('Check %s: format %s', (name, style, file1, file2, expectedResult) => {
+    const file1Data = getFixturePath(format, file1);
+    const file2Data = getFixturePath(format, file2);
+    const result = genDiff(file1Data, file2Data, style);
+    expect(result).toEqual(expectedResult);
+  });
 });
