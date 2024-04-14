@@ -10,13 +10,6 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`;
 
-const plainDefaultFile = `Property 'follow' was removed
-Property 'proxy' was removed
-Property 'timeout' was updated. From 50 to 20
-Property 'verbose' was added with value: true`;
-
-const plainSameFile = '';
-
 const plainSameNestedFile = '';
 
 const plainDif1File = `Property 'common.setting1' was removed
@@ -37,8 +30,6 @@ Property 'common.setting6.doge.wow' was updated. From '' to '!'`;
 
 export {
   plainNestedStructure,
-  plainDefaultFile,
-  plainSameFile,
   plainSameNestedFile,
   plainDif1File,
   plainDif2File,

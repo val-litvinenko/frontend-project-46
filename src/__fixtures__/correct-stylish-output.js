@@ -1,18 +1,3 @@
-const defaultFile = `{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`;
-
-const sameFile = `{
-    follow: true
-    host: hexlet.io
-    timeout: 100
-}`;
-
 const sameNestedFile = `{
     common: {
         setting1: Value 1
@@ -156,8 +141,6 @@ const nestedStructure = `{
 }`;
 
 export {
-  defaultFile,
-  sameFile,
   dif1File,
   dif2File,
   emptyFile,
