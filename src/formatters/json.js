@@ -4,18 +4,20 @@ import DIFF_TYPE_DICT from '../utils.js';
 const formatStringForJson = (identifier, key, value) => `"${identifier}_${key}":${value}`;
 
 const formatValue = (value, identifier) => {
+  const generateObjectLines = (key) => {
+    if (_.isObject(value[key])) {
+      return formatStringForJson(
+        identifier,
+        key,
+        formatValue(value[key], identifier),
+      );
+    }
+    return formatStringForJson(identifier, key, formatValue(value[key], identifier));
+  };
+
   if (_.isObject(value)) {
     const keys = Object.keys(value);
-    const objectLines = keys.map((key) => {
-      if (_.isObject(value[key])) {
-        return formatStringForJson(
-          identifier,
-          key,
-          formatValue(value[key], identifier),
-        );
-      }
-      return formatStringForJson(identifier, key, formatValue(value[key], identifier));
-    });
+    const objectLines = keys.map(generateObjectLines);
     return `{${objectLines.join(',')}}`;
   }
   return `${_.isString(value) ? `"${value}"` : value}`;
