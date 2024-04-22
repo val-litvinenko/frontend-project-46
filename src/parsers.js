@@ -1,18 +1,20 @@
 import yaml from 'js-yaml';
-import path from 'node:path';
 
 const JSONparser = (data) => JSON.parse(data);
 const YAMLparser = (data) => yaml.load(data);
 
-const parser = (filepath, filedata) => {
-  const extname = path.extname(filepath);
-  if (extname === '.json') {
-    return JSONparser(filedata);
+const parser = (extname, filedata) => {
+  switch (extname) {
+    case '.json': {
+      return JSONparser(filedata);
+    }
+    case '.yml':
+    case '.yaml': {
+      return YAMLparser(filedata);
+    }
+    default:
+      throw new Error('Unkown format');
   }
-  if (extname === '.yml' || extname === '.yaml') {
-    return YAMLparser(filedata);
-  }
-  return {};
 };
 
 export default parser;

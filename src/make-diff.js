@@ -10,8 +10,8 @@ const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const secondPathFile = path.resolve(cwd(), filepath2);
   const firstString = readFileSync(firstPathFile, 'utf8');
   const secondString = readFileSync(secondPathFile, 'utf8');
-  const parsedFirstFile = parser(firstPathFile, firstString);
-  const parsedSecondFile = parser(secondPathFile, secondString);
+  const parsedFirstFile = parser(path.extname(firstPathFile), firstString);
+  const parsedSecondFile = parser(path.extname(secondPathFile), secondString);
   const difference = generateDiff(parsedFirstFile ?? {}, parsedSecondFile ?? {});
   return formatter(format, difference);
 };
