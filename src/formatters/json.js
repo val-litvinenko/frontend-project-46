@@ -3,6 +3,8 @@ import DIFF_TYPE_DICT from '../utils.js';
 
 const formatStringForJson = (identifier, key, value) => `"${identifier}_${key}":${value}`;
 
+const manageQuotes = (value) => `${_.isString(value) ? `"${value}"` : value}`;
+
 const formatValue = (value, identifier) => {
   const generateObjectLines = (key) => {
     if (_.isObject(value[key])) {
@@ -20,7 +22,7 @@ const formatValue = (value, identifier) => {
     const objectLines = keys.map(generateObjectLines);
     return `{${objectLines.join(',')}}`;
   }
-  return `${_.isString(value) ? `"${value}"` : value}`;
+  return manageQuotes(value);
 };
 
 const generateString = (obj) => {
