@@ -4,12 +4,13 @@ const JSONparser = (data) => JSON.parse(data);
 const YAMLparser = (data) => yaml.load(data);
 
 const parser = (extname, filedata) => {
+  console.log(extname);
   switch (extname) {
-    case '.json': {
+    case 'json': {
       return JSONparser(filedata);
     }
-    case '.yml':
-    case '.yaml': {
+    case 'yml':
+    case 'yaml': {
       return YAMLparser(filedata);
     }
     default:

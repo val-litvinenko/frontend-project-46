@@ -36,7 +36,7 @@ const generateDiff = (file1, file2) => {
     const diffItem = generateDiffItem(file1, file2, key);
     return { ...diffItem, children };
   });
-  return diff;
+  return _.sortBy(diff, (o) => o.key1 ?? o.key2);
 };
 
 export default generateDiff;

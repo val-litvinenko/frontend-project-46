@@ -22,7 +22,7 @@ const generateString = (obj, parent) => {
 const filterDiffData = (obj) => obj.value1 !== obj.value2 || obj.children.length > 0;
 
 const plain = (diff, parent = '') => {
-  const outputArray = _.sortBy(diff, (o) => o.key1 ?? o.key2).filter(filterDiffData)
+  const outputArray = diff.filter(filterDiffData)
     .flatMap((obj) => {
       if (obj.children.length) {
         return plain(obj.children, `${parent}${obj.key1 ?? obj.key2}.`);

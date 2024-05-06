@@ -6,20 +6,10 @@ const formatStringForJson = (identifier, key, value) => `"${identifier}_${key}":
 const manageQuotes = (value) => `${_.isString(value) ? `"${value}"` : value}`;
 
 const formatValue = (value, identifier) => {
-  const generateObjectLines = (key) => {
-    if (_.isObject(value[key])) {
-      return formatStringForJson(
-        identifier,
-        key,
-        formatValue(value[key], identifier),
-      );
-    }
-    return formatStringForJson(identifier, key, formatValue(value[key], identifier));
-  };
-
   if (_.isObject(value)) {
     const keys = Object.keys(value);
-    const objectLines = keys.map(generateObjectLines);
+    const objectLines = keys
+      .map((key) => formatStringForJson(identifier, key, formatValue(value[key], identifier)));
     return `{${objectLines.join(',')}}`;
   }
   return manageQuotes(value);
@@ -39,7 +29,7 @@ const generateString = (obj) => {
 };
 
 const json = (diff) => {
-  const outputArray = _.sortBy(diff, (o) => o.key1 ?? o.key2).map((obj) => {
+  const outputArray = diff.map((obj) => {
     if (obj.children.length) {
       return `${formatStringForJson('files', obj.key1, json(obj.children))}`;
     }
